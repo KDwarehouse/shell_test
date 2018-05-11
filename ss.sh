@@ -5,3 +5,4 @@ mkdir /root/桌面/$i.txt
 done
 echo "ok"
 echo "yes"
+echo "haha"
