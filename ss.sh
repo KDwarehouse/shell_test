@@ -6,3 +6,4 @@ done
 echo "ok"
 echo "yes"
 echo "haha"
+echo "fuck you"
