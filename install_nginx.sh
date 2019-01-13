@@ -24,6 +24,11 @@ cd nginx-1.14.2
 make
 make install
 
+rm -rf /usr/local/nginx/conf/nginx.conf
+cp /root/work/shell_test/conf/nginx.conf  /usr/local/nginx/conf/nginx.conf
+/usr/local/nginx/sbin/nginx 
+
+
 cd /root && rm -rf /tmp/soft/*
 echo "......"
 echo "......"
