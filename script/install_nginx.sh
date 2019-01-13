@@ -25,7 +25,7 @@ make
 make install
 
 rm -rf /usr/local/nginx/conf/nginx.conf
-cp /root/work/shell_test/conf/nginx.conf  /usr/local/nginx/conf/nginx.conf
+cp /tmp/warehouse/shell_test/conf/nginx.conf  /usr/local/nginx/conf/nginx.conf
 /usr/local/nginx/sbin/nginx 
 
 
