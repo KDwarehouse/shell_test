@@ -1,4 +1,5 @@
 #!/bin/bash
+usera_chioce() {
 read -p "请选择你要进行的操作
 1) 检查服务器硬件信息
 2) 设置selinux和卸载firewalld
@@ -13,30 +14,42 @@ read -p "请选择你要进行的操作
 11) 添加防火墙规则
 12) 退出程序
 请输入上面编号进行选择：" user_chioce
-chioce() {
+}
+com_chioce() {
 case ${user_chioce} in
 1)
-	bash /tmp/work/shell_test/script/check_server.sh;;
+	bash /tmp/work/shell_test/script/check_server.sh
+	continue;;
 2)
-	bash /tmp/work/shell_test/script/set_selinuxfirewalld.sh;;
+	bash /tmp/work/shell_test/script/set_selinuxfirewalld.sh
+	continue;;
 3)
-	bash /tmp/work/shell_test/script/set_chronyserver.sh;;
+	bash /tmp/work/shell_test/script/set_chronyserver.sh
+	continue;;
 4)
-	bash /tmp/work/shell_test/script/set_chronydesk.sh;;
+	bash /tmp/work/shell_test/script/set_chronydesk.sh
+	continue;;
 5)
-	bash /tmp/work/shell_test/script/install_bt.sh;;
+	bash /tmp/work/shell_test/script/install_bt.sh
+	continue;;
 6)
-	bash /tmp/work/shell_test/script/install_mysql.sh;;
+	bash /tmp/work/shell_test/script/install_mysql.sh
+	continue;;
 7)
-	bash /tmp/work/shell_test/script/install_nginx.sh;;
+	bash /tmp/work/shell_test/script/install_nginx.sh
+	continue;;
 8)
-	bash /tmp/work/shell_test/script/install_redis.sh;;
+	bash /tmp/work/shell_test/script/install_redis.sh
+	continue;;
 9)
-	bash /tmp/work/shell_test/script/set_zabbixagent.sh;;
+	bash /tmp/work/shell_test/script/set_zabbixagent.sh
+	continue;;
 10)
-	bash /tmp/work/shell_test/script/set_ulimit.sh;;
+	bash /tmp/work/shell_test/script/set_ulimit.sh
+	continue;;
 11)
-	bash /tmp/work/shell_test/script/set_iptables.sh;;
+	bash /tmp/work/shell_test/script/set_iptables.sh
+	continue;;
 12)
 	exit;;
 *)
@@ -46,5 +59,6 @@ esac
 }
 while :
 do
-	chioce
+	usera_chioce
+	com_chioce
 done
