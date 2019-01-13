@@ -16,27 +16,27 @@ read -p "请选择你要进行的操作
 chioce() {
 case ${user_chioce} in
 1)
-	bash /tmp/work/shell_test/scrip/check_server.sh;;
+	bash /tmp/work/shell_test/script/check_server.sh;;
 2)
-	bash /tmp/work/shell_test/scrip/set_selinuxfirewalld.sh;;
+	bash /tmp/work/shell_test/script/set_selinuxfirewalld.sh;;
 3)
-	bash /tmp/work/shell_test/scrip/set_chronyserver.sh;;
+	bash /tmp/work/shell_test/script/set_chronyserver.sh;;
 4)
-	bash /tmp/work/shell_test/scrip/set_chronydesk.sh;;
+	bash /tmp/work/shell_test/script/set_chronydesk.sh;;
 5)
-	bash /tmp/work/shell_test/scrip/install_bt.sh;;
+	bash /tmp/work/shell_test/script/install_bt.sh;;
 6)
-	bash /tmp/work/shell_test/scrip/install_mysql.sh;;
+	bash /tmp/work/shell_test/script/install_mysql.sh;;
 7)
-	bash /tmp/work/shell_test/scrip/install_nginx.sh;;
+	bash /tmp/work/shell_test/script/install_nginx.sh;;
 8)
-	bash /tmp/work/shell_test/scrip/install_redis.sh;;
+	bash /tmp/work/shell_test/script/install_redis.sh;;
 9)
-	bash /tmp/work/shell_test/scrip/set_zabbixagent.sh;;
+	bash /tmp/work/shell_test/script/set_zabbixagent.sh;;
 10)
-	bash /tmp/work/shell_test/scrip/set_ulimit.sh;;
+	bash /tmp/work/shell_test/script/set_ulimit.sh;;
 11)
-	bash /tmp/work/shell_test/scrip/set_iptables.sh;;
+	bash /tmp/work/shell_test/script/set_iptables.sh;;
 12)
 	exit;;
 *)
