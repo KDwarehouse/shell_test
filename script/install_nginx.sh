@@ -43,7 +43,6 @@ make
 make install
 rm -rf /usr/local/nginx/conf/nginx.conf
 cp /tmp/work/shell_test/conf/nginx.conf  /usr/local/nginx/conf/nginx.conf
-/usr/local/nginx/sbin/nginx 
 
 if [ -f /usr/local/nginx/sbin/nginx ];then
 	echo "恭喜！！！安装nginx成功"
@@ -54,4 +53,12 @@ rm -rf /tmp/soft/nginx*
 echo "......"
 echo "......"
 echo "......"
-echo "安装此nginx只适用做调度器，请修改nginx.conf里面的serverIP！！！"
+echo "安装此nginx只适用做调度器。"
+
+
+
+read -p "请输入前端web1内外IP:" IP_web1
+read -p "请输入前端web2内外IP:" IP_web2
+sed -i "s/192.168.165.20/${IP_web1}/" /usr/local/nginx/conf/nginx.conf
+sed -i "s/192.168.165.21/${IP_web2}/" /usr/local/nginx/conf/nginx.conf
+/usr/local/nginx/sbin/nginx
