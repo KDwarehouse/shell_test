@@ -17,10 +17,23 @@ else
 	num=`yum repolist | sed -n 's/^repolist: //p' | sed -nr 's/,//p'`
 	if [ $num -gt 0 ];then
         	echo "yum源可用数为${num}个"
+		yum -y install chrony 
 	else
         	echo "yum源不可用，请配好yum源再使用此脚本"
         	exit
 	fi
 	sleep 2
-	yum -y install chrony &> /dev/null
-	
+fi
+read -p "请输入允许同步本机客户端ip段：" IP_chrony
+sed -i '/server 1.centos.pool.ntp.org iburst/d' /etc/chrony.conf
+sed -i '/server 2.centos.pool.ntp.org iburst/d' /etc/chrony.conf
+sed -i '/server 3.centos.pool.ntp.org iburst/d' /etc/chrony.conf
+sed -i "s%#allow 192.168.0.0/16%allow ${IP_chrony} %" /etc/chrony.conf
+sed -i 's/#local stratum 10/local stratum 10/' /etc/chrony.conf
+echo '......'
+echo '......'
+echo '......'
+echo '......'
+echo '时间同步服务端安装成功，配置文件修改成功！！！'
+systemctl start chronyd
+systemctl enable chronyd

@@ -13,7 +13,8 @@ do
 	if [ $i -gt $[numc+1500] ];then
 		echo $i 
 		b=`grep $i /tmp/gaun.com.log | awk '{print $2}'`
-		echo $b
+		c=`grep "$b" /root/df/shell_test/test/server_ip.txt |awk '{print $1}'`
+		echo $c
 	else
 		continue
 	fi

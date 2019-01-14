@@ -22,7 +22,7 @@ else
 	exit
 fi
 sleep 2
-yum -y install wget gcc pcre-devel openssl-devel zlib-devel  &> /dev/null
+yum -y install wget gcc pcre-devel openssl-devel zlib-devel 
 if [ $? -eq 0 ];then
 	echo "依赖安装成功！！！"
 else
@@ -30,7 +30,7 @@ else
 fi
 mkdir /tmp/soft
 cd /tmp/soft
-wget http://nginx.org/download/nginx-1.14.2.tar.gz &>/dev/null
+wget http://nginx.org/download/nginx-1.14.2.tar.gz
 if [ -e nginx-1.14.2.tar.gz ];then
 	echo "nginx下载成功！！！"
 else
@@ -38,9 +38,9 @@ else
 fi
 tar xf nginx-1.14.2.tar.gz
 cd nginx-1.14.2
-./configure --prefix=/usr/local/nginx --user=nginx --group=nginx --with-http_ssl_module --with-stream --with-http_stub_status_module &>/dev/null
-make &>/dev/null
-make install &> /dev/null
+./configure --prefix=/usr/local/nginx --user=nginx --group=nginx --with-http_ssl_module --with-stream --with-http_stub_status_module
+make 
+make install
 rm -rf /usr/local/nginx/conf/nginx.conf
 cp /tmp/work/shell_test/conf/nginx.conf  /usr/local/nginx/conf/nginx.conf
 /usr/local/nginx/sbin/nginx 

@@ -8,7 +8,7 @@ if [ $? -eq 0 ];then
 else
 	echo "设置失败！！！，请退出查看......" && exit
 fi
-yum remove firewalld &> /dev/null
+yum remove firewalld 
 rpm -q firewalld
 if [ $? -gt 0 ];then
 	echo "firewalld卸载成功！！！"
