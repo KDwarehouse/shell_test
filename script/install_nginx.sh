@@ -49,7 +49,7 @@ if [ -f /usr/local/nginx/sbin/nginx ];then
 else
 	echo "抱歉！！！安装nginx失败，请退出检查环境等其它原因"  && exit
 fi
-rm -rf /tmp/soft/nginx*
+rm -rf /tmp/soft
 echo "......"
 echo "......"
 echo "......"
