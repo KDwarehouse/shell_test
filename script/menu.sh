@@ -57,7 +57,7 @@ case ${user_chioce} in
 	bash /tmp/work/shell_test/script/install_nginx.sh
 	continue;;
 13)
-	bash /tmp/work/shell_test/script/install_zabbix.sh
+	bash /tmp/work/shell_test/script/set_zabbix.sh
 	continue;;
 14)
 	bash /tmp/work/shell_test/script/set_iptables.sh
