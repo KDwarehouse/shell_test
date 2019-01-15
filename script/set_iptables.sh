@@ -1,2 +1,7 @@
 #!/bin/bash
-echo "设置服务器服务器防火墙规则"
+read -p "请输入你防火墙要开放的端口以逗号分隔：" ip_port
+iptables -I INPUT -p tcp -m multiport --dport ${ip_port} -j ACCEPT
+
+iptables-save >> /etc/sysconfig/iptables
+echo "source iptables-restore < /etc/sysconfig/iptables" >>/etc/rc.local
+chmod 777 /etc/rc.local
