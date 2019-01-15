@@ -29,3 +29,18 @@ sed -i "s/log_bin=master/log_bin=${a_name}/" /usr/my.cnf
 sed -i "s/port=4273/port=${port_a}/" /usr/my.cnf
 
 systemctl restart mysql
+
+
+read -p "主库bin文件名为:" m_bin
+read -p "主库position位置为:" m_position
+read -p "主库内网ip：" m_ip
+read -P "主库mysql端口：" m_port
+mysql -uroot -p${passwdb} -e "change master to master_host='$m_ip',master_port=$m_port,master_user='slave',master_password='slave1212',master_log_file='$m_bin',master_log_pos=$m_position;"
+mysql -uroot -p${passwdb} -e "start slave;" && echo 从库启动中
+sleep 10
+slave_status=`mysql -uroot -p${passwdb} -e "show slave status\G" 2>/dev/null | grep Yes |wc -l`
+if [ "$slave_status" -eq 2 ] ;then
+   echo "从库配置成功"
+else
+   echo "从库配置失败请检查"
+fi
