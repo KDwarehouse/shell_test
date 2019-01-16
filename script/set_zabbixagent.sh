@@ -3,9 +3,9 @@ useradd -s /sbin/nologin zabbix
 yum -y install wget gcc pcre-devel
 mkdir /tmp/soft
 cd /tmp/soft
-cp /tmp/work/shell_test/soft/zabbix-3.4.15.tar.gz
-tar xf zabbix-3.4.15.tar.gz
-cd zabbix-3.4.15
+wget https://www.ttl178.com/tools/zabbix-4.0.1.tar.gz
+tar xf zabbix-4.0.1.tar.gz
+cd zabbix-4.0.1
 ./configure --enable-agent
 make && make install
 
