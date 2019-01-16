@@ -23,7 +23,7 @@ cp /tmp/work/shell_test/conf/master.cnf /usr/my.cnf
 
 read -p "设置主库ID编号：" id_a
 read -p "设置主库binlog日志代号：" a_name
-read -P "设置mysql端口号：" port_a
+read -p "设置mysql端口号：" port_a
 sed -i "s/server_id=1/server_id=${id_a}/" /usr/my.cnf
 sed -i "s/log_bin=master/log_bin=${a_name}/" /usr/my.cnf
 sed -i "s/port=4273/port=${port_a}/" /usr/my.cnf
