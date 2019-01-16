@@ -63,6 +63,8 @@ case ${user_chioce} in
 	bash /tmp/work/shell_test/script/set_iptables.sh
 	continue;;
 15)
+
+	rm -rf /tmp/work	
 	exit;;
 *)
 	echo "输入格式不对！请输入数字！"
