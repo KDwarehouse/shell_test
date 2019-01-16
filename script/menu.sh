@@ -3,12 +3,12 @@ usera_chioce() {
 read -p "请选择你要进行的操作
 1) 检查服务器硬件信息
 2) 设置主机名，设置登录root密码
-3) 设置selinux和卸载firewalld
+3) 安装宝塔面板
 4) 修改时区并安装时间同步【服务端】
 5) 修改时区并安装时间同步【客户端】
 6) 修改服务器打开文件最大数
 7) 修改ssh端口
-8) 安装宝塔面板
+8) 设置selinux和卸载firewalld
 9) 安装mysql配置主库信息，设置开机自启
 10) 安装mysql配置从库信息，设置开机自启
 11) 安装redis服务，自定义端口，设置本地ip地址访问，设置开机自启
@@ -28,7 +28,7 @@ case ${user_chioce} in
 	bash /tmp/work/shell_test/script/set_hostname.sh
 	continue;;
 3)
-	bash /tmp/work/shell_test/script/set_selinuxfirewalld.sh
+	bash /tmp/work/shell_test/script/install_bt.sh
 	continue;;
 4)
 	bash /tmp/work/shell_test/script/set_chronyserver.sh
@@ -43,7 +43,7 @@ case ${user_chioce} in
 	bash /tmp/work/shell_test/script/set_ssh.sh
 	continue;;
 8)
-	bash /tmp/work/shell_test/script/install_bt.sh
+	bash /tmp/work/shell_test/script/set_selinuxfirewalld.sh
 	continue;;
 9)
 	bash /tmp/work/shell_test/script/install_masterdb.sh
