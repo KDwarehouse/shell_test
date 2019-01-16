@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir /tmp/soft
 cd /tmp/soft
-yum -y install autoconf perl-JSON wget
+yum -y install autoconf perl-JSON wget expect
 wget https://downloads.mysql.com/archives/get/file/MySQL-5.6.41-1.el7.x86_64.rpm-bundle.tar
 tar xf MySQL-5.6.41-1.el7.x86_64.rpm-bundle.tar && yum -y install Mysql-*.rpm
 rm -rf /etc/my.cnf
@@ -23,7 +23,7 @@ cp /tmp/work/shell_test/conf/slave.cnf /usr/my.cnf
 
 read -p "设置从库ID编号：" id_a
 read -p "设置库binlog日志代号：" a_name
-read -P "设置mysql端口号：" port_a
+read -p "设置mysql端口号：" port_a
 sed -i "s/server_id=1/server_id=${id_a}/" /usr/my.cnf
 sed -i "s/log_bin=master/log_bin=${a_name}/" /usr/my.cnf
 sed -i "s/port=4273/port=${port_a}/" /usr/my.cnf
@@ -34,7 +34,7 @@ systemctl restart mysql
 read -p "主库bin文件名为:" m_bin
 read -p "主库position位置为:" m_position
 read -p "主库内网ip：" m_ip
-read -P "主库mysql端口：" m_port
+read -p "主库mysql端口：" m_port
 mysql -uroot -p${passwdb} -e "change master to master_host='$m_ip',master_port=$m_port,master_user='slave',master_password='slave1212',master_log_file='$m_bin',master_log_pos=$m_position;"
 mysql -uroot -p${passwdb} -e "start slave;" && echo 从库启动中
 sleep 10
