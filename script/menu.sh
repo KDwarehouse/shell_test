@@ -7,7 +7,7 @@ read -p "请选择你要进行的操作
 4) 修改时区并安装时间同步【服务端】
 5) 修改时区并安装时间同步【客户端】
 6) 修改服务器打开文件最大数
-7) 修改ssh端口，设置远程登录限制
+7) 修改ssh端口
 8) 安装宝塔面板
 9) 安装mysql配置主库信息，设置开机自启
 10) 安装mysql配置从库信息，设置开机自启
@@ -15,7 +15,8 @@ read -p "请选择你要进行的操作
 12) 安装nginx，配置调度器设置前端ip和开机自启
 13) 安装zabbix客户端，并修改配置文件
 14) 添加防火墙规则
-15) 退出程序
+15) 设置hosts.allow和hosts.deny文件，允许那些ip可以远程登录
+16) 退出程序
 请输入上面编号进行选择：" user_chioce
 }
 com_chioce() {
@@ -63,6 +64,9 @@ case ${user_chioce} in
 	bash /tmp/work/shell_test/script/set_iptables.sh
 	continue;;
 15)
+	bash /tmp/work/shell_test/script/set_ssh_allow.sh
+	continue;;
+16)
 
 	rm -rf /tmp/work	
 	exit;;
