@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir /tmp/soft
 cd /tmp/soft
-yum -y install autoconf perl-JSON wget
+yum -y install autoconf perl-JSON wget except
 wget https://downloads.mysql.com/archives/get/file/MySQL-5.6.41-1.el7.x86_64.rpm-bundle.tar
 tar xf MySQL-5.6.41-1.el7.x86_64.rpm-bundle.tar
 yum -y install MySQL-*.rpm
@@ -16,8 +16,16 @@ fi
 
 
 read -p "请输入你要创建的密码：" passwdb
-passwda=`awk -F: '{print $4}' /root/.mysql_secret`
-mysql -uroot -p${passwda} -e "set password=password('$passwdb')"
+passwda=`awk '{print $NF}' /root/.mysql_secret`
+expect <<  EOF
+spawn mysql -uroot  -p
+expect "password:" {send "${passwda}\r"}
+expect "mysql>" {send "SET PASSWORD FOR root@localhost=PASSWORD('${passwdb}');\r"}
+expect "mysql>" {send "exit\r"}
+EOF
+[ $? -eq 0 ] && echo mysql密码修改成功,密码是:${passwdb} || echo 密码修改失
+
+
 
 rm -rf /usr/my.cnf
 cp /tmp/work/shell_test/conf/master.cnf /usr/my.cnf

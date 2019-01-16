@@ -16,8 +16,14 @@ fi
 
 
 read -p "请输入你要创建的密码：" passwdb
-passwda=`awk -F: '{print $4}' /root/.mysql_secret`
-mysql -uroot -p${passwda} -e "set password=password('$passwdb')"
+passwda=`awk '{print $NF}' /root/.mysql_secret`
+expect <<  EOF
+spawn mysql -uroot  -p
+expect "password:" {send "${passwda}\r"}
+expect "mysql>" {send "SET PASSWORD FOR root@localhost=PASSWORD('${passwdb}');\r"}
+expect "mysql>" {send "exit\r"}
+EOF
+[ $? -eq 0 ] && echo mysql密码修改成功,密码是:${passwdb} || echo 密码修改失
 
 rm -rf /usr/my.cnf
 cp /tmp/work/shell_test/conf/slave.cnf /usr/my.cnf
