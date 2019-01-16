@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir /tmp/soft
 cd /tmp/soft
-yum -y install autoconf perl-JSON wget except
+yum -y install autoconf perl-JSON wget expect
 wget https://downloads.mysql.com/archives/get/file/MySQL-5.6.41-1.el7.x86_64.rpm-bundle.tar
 tar xf MySQL-5.6.41-1.el7.x86_64.rpm-bundle.tar
 yum -y install MySQL-*.rpm
