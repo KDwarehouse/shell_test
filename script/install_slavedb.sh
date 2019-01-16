@@ -11,7 +11,7 @@ systemctl start mysql
 if [ $? -eq 0 ];then
 	echo "mysql安装已经完成！"
 else
-	echo "mysql安装失败！"
+	echo "mysql安装失败！" && exit
 fi
 
 
@@ -51,3 +51,4 @@ if [ "$slave_status" -eq 2 ] ;then
 else
    echo "从库配置失败请检查"
 fi
+rm -rf /tmp/soft

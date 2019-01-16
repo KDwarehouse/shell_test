@@ -43,3 +43,5 @@ mysql -uroot -p${passwdb} -e "GRANT REPLICATION SLAVE ON *.* TO 'slave'@'192.168
 m_binfile=`mysql -uroot -p${passwdb} -e "show master status\G"  2>/dev/null | awk '/File/{print $2}'`
 m_posi=`mysql -uroot -p${passwdb} -e "show master status\G"  2>/dev/null | awk '/Position/{print $2}'`
 echo "bin文件名为:$m_binfile posi位置为:$m_posi"
+
+rm -rf /tmp/soft
