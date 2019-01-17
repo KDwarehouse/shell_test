@@ -15,3 +15,9 @@ if [ $? -gt 0 ];then
 else
 	echo "firewalld卸载失败！！！，请退出查看......" && exit
 fi
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''

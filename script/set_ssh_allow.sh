@@ -5,3 +5,9 @@ echo "sshd:${ip_allow}:allow" >> /etc/hosts.allow
 echo "sshd:all" >> /etc/hosts.deny
 
 echo "hosts.allow和hosts.deny设置完成"
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''

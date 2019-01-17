@@ -62,3 +62,9 @@ else
    echo "从库配置失败请检查"
 fi
 rm -rf /tmp/soft
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''

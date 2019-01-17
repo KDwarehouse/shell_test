@@ -15,3 +15,9 @@ else
 	echo "两次输入密码不一致！" 
 	exit
 fi
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''

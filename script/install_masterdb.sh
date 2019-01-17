@@ -55,3 +55,9 @@ m_posi=`mysql -uroot -p${passwdb} -e "show master status\G"  2>/dev/null | awk '
 echo "bin文件名为:$m_binfile posi位置为:$m_posi"
 
 rm -rf /tmp/soft
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''

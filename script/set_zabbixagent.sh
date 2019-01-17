@@ -32,3 +32,9 @@ fi
 
 
 rm -rf /tmp/soft
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''

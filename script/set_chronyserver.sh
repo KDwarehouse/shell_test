@@ -37,3 +37,9 @@ echo '......'
 echo '时间同步服务端安装成功，配置文件修改成功！！！'
 systemctl start chronyd
 systemctl enable chronyd
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
