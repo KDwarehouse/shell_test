@@ -62,3 +62,5 @@ read -p "请输入前端web2内外IP:" IP_web2
 sed -i "s/192.168.165.20/${IP_web1}/" /usr/local/nginx/conf/nginx.conf
 sed -i "s/192.168.165.21/${IP_web2}/" /usr/local/nginx/conf/nginx.conf
 /usr/local/nginx/sbin/nginx
+
+echo "/usr/local/nginx/sbin/nginx"  >> /etc/rc.local
