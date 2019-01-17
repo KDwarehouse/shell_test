@@ -4,6 +4,16 @@ cd /tmp/soft
 yum -y install autoconf perl-JSON wget expect
 wget https://downloads.mysql.com/archives/get/file/MySQL-5.6.41-1.el7.x86_64.rpm-bundle.tar
 tar xf MySQL-5.6.41-1.el7.x86_64.rpm-bundle.tar
+#if [ -d /var/lib/mysql ];then
+#	rm -rf /var/lib/mysql
+#	yum remove MySQL*
+#	a=`find / -name mysql`
+#	for i in $a
+#	do
+#		rm -rf $i
+#	done
+#	rm -rf /root/*mysql*
+#fi
 yum -y install MySQL-*.rpm
 rm -rf /etc/my.cnf
 systemctl start mysql
