@@ -64,10 +64,6 @@ sed -i "s/192.168.165.21/${IP_web2}/" /usr/local/nginx/conf/nginx.conf
 /usr/local/nginx/sbin/nginx
 
 echo "/usr/local/nginx/sbin/nginx"  >> /etc/rc.local
-echo ''
-echo ''
-echo ''
-echo ''
-echo ''
+chmod 777 /etc/rc.local
 echo ''
 echo ''

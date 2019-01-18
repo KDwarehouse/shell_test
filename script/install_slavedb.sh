@@ -61,10 +61,8 @@ if [ "$slave_status" -eq 2 ] ;then
 else
    echo "从库配置失败请检查"
 fi
+echo "systemctl start mysql" >> /etc/rc.local
+chmod 777 /etc/rc.local
 rm -rf /tmp/soft
-echo ''
-echo ''
-echo ''
-echo ''
 echo ''
 echo ''

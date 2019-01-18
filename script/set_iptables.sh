@@ -7,7 +7,3 @@ echo "iptables-restore < /etc/sysconfig/iptables" >>/etc/rc.local
 chmod 777 /etc/rc.local
 echo ''
 echo ''
-echo ''
-echo ''
-echo ''
-echo ''
