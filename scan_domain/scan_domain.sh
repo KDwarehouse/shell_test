@@ -1,7 +1,7 @@
 #!/bin/bash
 source /root/send_message.sh
 URL_LIST=`awk '{print $1}' /root/ce_url_list.txt`
-DATE=`date +%F-%H:%M`
+DATE=`date +%F[%T]`
 #echo ${DATE}
 for URL in ${URL_LIST}
 do
