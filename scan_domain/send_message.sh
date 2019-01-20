@@ -7,5 +7,5 @@ function send_message(){
         tele_token='619423079:AAFPQuGFbCwH8O3jSefntGa8rd0Tr_Wq_zs'
         group_id='-342008533'
         text="<b>angry发现</b> »> "$1
-        curl "https://api.telegram.org/bot${tele_token}/sendMessage?chat_id=${group_id}&text=${text}&parse_mode=html"
+        curl -g "https://api.telegram.org/bot${tele_token}/sendMessage?chat_id=${group_id}&text=${text}&parse_mode=html"
 }
