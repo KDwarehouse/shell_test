@@ -1,0 +1,8 @@
+/etc/cron.d/ #该目录下面放的是定时任务的文件
+
+例：添加一个没十分钟检测域名的定时任务
+1.在定时任务目录里面创建定时任务文件（注意：这个文件的权限必须是644）
+vim /etc/cron.d/tmp
+*/10 * * * * root  /root/df/shell_test/scan_domain/scan_domain.sh  #这里面必须要加上root否则运行不成功
+2.重启crond服务
+systemctl restart crond
