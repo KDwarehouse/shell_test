@@ -2,7 +2,7 @@
 Njob=15
 for i in `seq ${Njob}`
 do
-	echo "progress $i is sleeping for 3 seconds zzz…"
+	echo "$i"
 sleep 3 & #循环内容放到后台执行
 done
 wait #等待循环结束再执行wait后面的内容
