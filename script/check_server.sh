@@ -9,14 +9,7 @@ echo -e  "\033[32m${*}\033[0m"
 geshi(){
 echo ""
 }
-geshi
-geshi
-geshi
-geshi
-geshi
 echo -e "------------当前服务器硬件信息---------------------"
-geshi
-geshi
 geshi
 lscpu | awk '/^CPU\(s/{print "CPU逻辑处理器数是:",$2}'
 geshi
@@ -78,7 +71,4 @@ geshi
 echo 系统时区为`timedatectl | grep 'Time zone'`
 geshi
 echo "当前系统时间为:`date`" 
-geshi
-geshi
-geshi
-geshi
+echo -e "----------------------------------------------------"

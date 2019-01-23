@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "安装时间同步客户端"
+echo "\033[41;38m 安装时间同步客户端 \033[0m"
 ctime_zone=`timedatectl | sed -n '/Time zone/p' | awk '{print $3}'`
 if [ $ctime_zone != 'Asia/Shanghai' ];then
         echo "时区错误！！！修改时区中......"
@@ -34,9 +34,3 @@ echo '......'
 echo '时间同步客户端安装成功，配置文件修改成功！！！'
 systemctl start chronyd
 systemctl enable chronyd
-echo ''
-echo ''
-echo ''
-echo ''
-echo ''
-echo ''
