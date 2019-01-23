@@ -1,0 +1,4 @@
+timedatectl #查看服务器的时间和时区
+修改服务器时区的方法：
+mv /etc/localtime  /etc/localtime.bak #备份原来的时区文件
+ln -s /usr/share/zoneinfo/Asia/Shanghai   /etc/localtime #生成新的时区文件
