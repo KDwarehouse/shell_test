@@ -1,29 +1,46 @@
 #!/bin/bash
-mkdir /tmp/soft
-cd /tmp/soft
-yum -y install autoconf perl-JSON wget expect
-wget https://downloads.mysql.com/archives/get/file/MySQL-5.6.41-1.el7.x86_64.rpm-bundle.tar
-tar xf MySQL-5.6.41-1.el7.x86_64.rpm-bundle.tar
-if [ -d /var/lib/mysql ];then
-	rm -rf /var/lib/mysql
-	yum remove MySQL*
-	a=`find / -name mysql`
-	for i in $a
-	do
-		rm -rf $i
-	done
-	rm -rf /root/.mysql*
+if [ -d /tmp/soft ];then
+	mkdir /tmp/softsoft11
+	cd /tmp/softsoft11
+	yum -y install autoconf perl-JSON wget expect
+	wget https://downloads.mysql.com/archives/get/file/MySQL-5.6.41-1.el7.x86_64.rpm-bundle.tar
+	tar xf MySQL-5.6.41-1.el7.x86_64.rpm-bundle.tar
+else
+	mkdir /tmp/soft
+	cd /tmp/soft
+	yum -y install autoconf perl-JSON wget expect
+	wget https://downloads.mysql.com/archives/get/file/MySQL-5.6.41-1.el7.x86_64.rpm-bundle.tar
+	tar xf MySQL-5.6.41-1.el7.x86_64.rpm-bundle.tar
 fi
+
+if [ -d /var/lib/mysql ];then
+	echo -e "\033[41;37m MYSQL已经安装 \033[0m"
+	read -p "1）卸载并重新安装 2）退出" user_chi
+	case ${user_chi} in
+	1)
+		rm -rf /var/lib/mysql
+		yum remove MySQL*
+		a=`find / -name mysql`
+		for i in $a
+		do
+			rm -rf $i
+		done
+		rm -rf /root/.mysql*
+		;;
+	2)
+		exit;;
+	esac
+fi
+
 yum -y install MySQL-*.rpm
 rm -rf /etc/my.cnf
 systemctl start mysql
-
+ss -nutlp | grep mysqld
 if [ $? -eq 0 ];then
 	echo "mysql安装已经完成！"
 else
 	echo "mysql安装失败！"
 fi
-
 
 read -p "请输入你要创建的密码：" passwdb
 passwda=`awk '{print $NF}' /root/.mysql_secret`
@@ -35,8 +52,6 @@ expect "mysql>" {send "exit\r"}
 EOF
 [ $? -eq 0 ] && echo mysql密码修改成功,密码是:${passwdb} || echo 密码修改失
 
-
-
 rm -rf /usr/my.cnf
 cp /tmp/work/shell_test/conf/master.cnf /usr/my.cnf
 
@@ -46,7 +61,6 @@ read -p "设置mysql端口号：" port_a
 sed -i "s/server_id=1/server_id=${id_a}/" /usr/my.cnf
 sed -i "s/log_bin=master/log_bin=${a_name}/" /usr/my.cnf
 sed -i "s/port=4273/port=${port_a}/" /usr/my.cnf
-
 systemctl restart mysql
 
 mysql -uroot -p${passwdb} -e "GRANT REPLICATION SLAVE ON *.* TO 'slave'@'192.168.%.%' IDENTIFIED BY 'slave1212';"
@@ -55,6 +69,4 @@ m_posi=`mysql -uroot -p${passwdb} -e "show master status\G"  2>/dev/null | awk '
 echo "bin文件名为:$m_binfile posi位置为:$m_posi"
 chmod 777 /etc/rc.local
 echo "systemctl start mysql" >> /etc/rc.local
-rm -rf /tmp/soft
-echo ''
-echo ''
+rm -rf /tmp/soft || rm -rf /tmp/softsoft11
