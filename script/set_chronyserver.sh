@@ -31,15 +31,7 @@ sed -i '/server 3.centos.pool.ntp.org iburst/d' /etc/chrony.conf
 sed -i "s%#allow 192.168.0.0/16%allow ${IP_chrony} %" /etc/chrony.conf
 sed -i 's/#local stratum 10/local stratum 10/' /etc/chrony.conf
 echo '......'
-echo '......'
-echo '......'
-echo '......'
 echo '时间同步服务端安装成功，配置文件修改成功！！！'
 systemctl start chronyd
 systemctl enable chronyd
-echo ''
-echo ''
-echo ''
-echo ''
-echo ''
 echo ''

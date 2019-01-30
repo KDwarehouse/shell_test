@@ -8,7 +8,7 @@ binlog_format='mixed'
 port=4273
 max_connections=400
 default-time_zone = '+8:00'
-
+max_allowed_packet  = 160M
 # Remove leading # and set to the amount of RAM for the most important data
 # cache in MySQL. Start at 70% of total RAM for dedicated server, else 10%.
 # innodb_buffer_pool_size = 128M
