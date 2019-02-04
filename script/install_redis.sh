@@ -19,5 +19,3 @@ echo "本机redis服务ip和端口是：${num}"
 
 echo "/etc/init.d/redis_${port_a} start" >> /etc/rc.local
 chmod 777 /etc/rc.local
-echo ''
-echo ''

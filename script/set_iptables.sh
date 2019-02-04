@@ -5,5 +5,4 @@ iptables -I INPUT -p tcp -m multiport --dport ${ip_port} -j ACCEPT
 iptables-save >> /etc/sysconfig/iptables
 echo "iptables-restore < /etc/sysconfig/iptables" >>/etc/rc.local
 chmod 777 /etc/rc.local
-echo ''
-echo ''
+echo "你开放的端口是：${ip_port}"
