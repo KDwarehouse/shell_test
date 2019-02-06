@@ -57,8 +57,8 @@ echo "安装此nginx只适用做调度器。"
 
 
 
-read -p "请输入前端web1内外IP:" IP_web1
-read -p "请输入前端web2内外IP:" IP_web2
+read -p "请输入前端web1内网IP:" IP_web1
+read -p "请输入前端web2内网IP:" IP_web2
 sed -i "s/192.168.165.20/${IP_web1}/" /usr/local/nginx/conf/nginx.conf
 sed -i "s/192.168.165.21/${IP_web2}/" /usr/local/nginx/conf/nginx.conf
 /usr/local/nginx/sbin/nginx
