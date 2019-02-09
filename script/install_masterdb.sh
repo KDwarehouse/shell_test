@@ -63,10 +63,20 @@ sed -i "s/log_bin=master/log_bin=${a_name}/" /usr/my.cnf
 sed -i "s/port=4273/port=${port_a}/" /usr/my.cnf
 systemctl restart mysql
 
-mysql -uroot -p${passwdb} -e "GRANT REPLICATION SLAVE ON *.* TO 'slave'@'192.168.%.%' IDENTIFIED BY 'slave1212';"
+read -p "请输入你要允许那个ip同步本机的数据" ip_onlya
+read -p "请输入你要允许那个ip同步本机的数据" ip_onlyb
+expect << EOF
+spawn mysql -uroot -p
+expect "password:"	{send "${passwdb}\r"}
+expect "mysql>"		{send "GRANT REPLICATION SLAVE ON *.* TO 'slave'@'${ip_onlya}' IDENTIFIED BY 'slave1212';\r"}
+expect "mysql>"		{send "GRANT REPLICATION SLAVE ON *.* TO 'slave'@'${ip_onlyb}' IDENTIFIED BY 'slave1212';\r"}
+expect "mysql>"		{send "exit\r"}
+EOF
+
 m_binfile=`mysql -uroot -p${passwdb} -e "show master status\G"  2>/dev/null | awk '/File/{print $2}'`
 m_posi=`mysql -uroot -p${passwdb} -e "show master status\G"  2>/dev/null | awk '/Position/{print $2}'`
-echo "bin文件名为:$m_binfile posi位置为:$m_posi"
+echo -e "\033[42;37m bin文件名为:$m_binfile \033[0m"
+echo -e "\033[42;37m posi位置为:$m_posi \033[0m"
 chmod 777 /etc/rc.local
 echo "systemctl start mysql" >> /etc/rc.local
 rm -rf /tmp/soft || rm -rf /tmp/softsoft11
