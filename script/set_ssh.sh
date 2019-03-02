@@ -4,8 +4,9 @@ read -p "请输入你要开放ssh端口：" ssh_port
 sed -i "s/#Port 22/Port ${ssh_port}/" /etc/ssh/sshd_config
 systemctl restart sshd
 a=`awk '/^Port / {print $2}' /etc/ssh/sshd_config`
+b=`sed -n '/^Port/p' /etc/ssh/sshd_config`
 if [ $a != ${ssh_port} ];then
-        sed -i "s/${a}/Port ${ssh_port}/" /etc/ssh/sshd_config
+        sed -i "s/${b}/Port ${ssh_port}/" /etc/ssh/sshd_config
         systemctl restart sshd
 fi
 
