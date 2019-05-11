@@ -54,7 +54,7 @@ expect "mysql>" {send "exit\r"}
 EOF
 [ $? -eq 0 ] && echo mysql密码修改成功,密码是:${passwdb} || echo 密码修改失败！
 
-\cp -rf /root/git-hub/shell_test/conf/master.cnf /etc/my.cnf
+\cp -rf /tmp/work/shell_test/conf/master.cnf /etc/my.cnf
 read -p "设置从库ID编号：" id_a
 read -p "设置库binlog日志代号：" a_name
 read -p "设置mysql端口号：" port_a
