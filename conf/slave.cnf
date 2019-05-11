@@ -1,35 +1,33 @@
-# For advice on how to change settings please see
-# http://dev.mysql.com/doc/refman/5.6/en/server-configuration-defaults.html
-
 [mysqld]
+default-storage-engine=INNODB
+character-set-server=utf8
+collation-server=utf8_general_ci
+
+slow_query_log = 1
+slow_query_log_file = /var/lib/mysql/mysql-slow.log
+long_query_time = 1
+
+skip-name-resolve
+long_query_time = 1
+max_connections = 10000
+
+max_allowed_packet = 100M
+
+sort_buffer_size = 20M
+read_buffer_size = 4M
+join_buffer_size = 128M
+innodb_thread_concurrency = 16
+tmp_table_size = 256M
+thread_cache_size = 800
+query_cache_type = 1
+query_cache_size = 512M
+
 server_id=2
 log_bin=slave1
 sync_binlog=1
 read_only=1
 port=4273
-max_connections=400
 default-time_zone = '+8:00'
 max_allowed_packet  = 160M
-# Remove leading # and set to the amount of RAM for the most important data
-# cache in MySQL. Start at 70% of total RAM for dedicated server, else 10%.
-# innodb_buffer_pool_size = 128M
-
-# Remove leading # to turn on a very important data integrity option: logging
-# changes to the binary log between backups.
-# log_bin
-
-# These are commonly set, remove the # and set as required.
-# basedir = .....
-# datadir = .....
-# port = .....
-# server_id = .....
-# socket = .....
-
-# Remove leading # to set options mainly useful for reporting servers.
-# The server defaults are faster for transactions and fast SELECTs.
-# Adjust sizes as needed, experiment to find the optimal values.
-# join_buffer_size = 128M
-# sort_buffer_size = 2M
-# read_rnd_buffer_size = 2M 
 
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES 
