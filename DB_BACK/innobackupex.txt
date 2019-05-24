@@ -191,7 +191,7 @@ innobackupex 参数
 ------------------------------------------------------------------------------------------
 
 
-例如：
+完全备份+恢复例如：
 innobackupex --user root --password avy0,.s0Ytfh /backup/all_backup --no-timestamp
 #完全备份
 
@@ -203,3 +203,19 @@ chown -R mysql:mysql mysql
 systemctl restart mysqld
 #恢复完全备份的数据
 
+
+
+完全+增量备份：
+innobackupex --user root --password avy0,.s0Ytfh /backup/all_backup --no-timestamp
+innobackupex --user root --password avy0,.s0Ytfh --incremental /backup/incremental --incremental-basedir=/backup/all_backup
+innobackupex --user root --password avy0,.s0Ytfh --incremental /backup/incremental --incremental-basedir=/backup/incremental/2019-05-24_18-58-33/
+
+完全+增量恢复：
+innobackupex  --user root --password avy0,.s0Ytfh --apply-log --redo-only /backup/all_backup/
+innobackupex  --user root --password avy0,.s0Ytfh --apply-log --redo-only /backup/all_backup/ --incremental-dir=/backup/incremental/2019-05-24_18-58-33
+innobackupex  --user root --password avy0,.s0Ytfh --apply-log --redo-only /backup/all_backup/ --incremental-dir=/backup/incremental/2019-05-24_19-32-00
+systemctl stop mysqld.service 
+rm -rf /var/lib/mysql
+innobackupex  --user root --password avy0,.s0Ytfh --copy-back /backup/all_backup/
+chown -R mysql:mysql /var/lib/mysql
+systemctl start mysqld
