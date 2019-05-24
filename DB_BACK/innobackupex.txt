@@ -1,0 +1,205 @@
+XtraBackup工具
+        在线热备份工具
+　　　　备份过程中不锁表,适合生产环境适用
+　　　　支持整体备份和增量备份
+
+innobackupex 命令安装
+wget https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-2.4.4/binary/redhat/7/x86_64/percona-xtrabackup-24-2.4.4-1.el7.x86_64.rpm
+yum install percona-xtrabackup-24-2.4.4-1.el7.x86_64.rpm
+
+innobackupex 参数
+------------------------------------------------------------------------------------------
+--apply-log 
+#通过应用同一目录下的事务日志文件xtrabackup_logfile，在BACKUP-DIR目录准备一个备份。页建立一个新的事务日志文件。innoDB的配置是从innobackupex备份时建立的文件backup-my.cnf读取。
+
+--close-files
+#不保持文件被打开。默认备份时tablespace不关闭，但如果表空间很大并且不适合任何限制，有一个可选的方法是关闭不再访问的文件。使用该选项会产生不一致的备份。
+
+--compact
+#建立一个忽略耳机索引页的简洁备份。
+
+--compress
+#建立一个innoDB数据文件的压缩备份。它直接提交给xtrabackup的子进程
+
+--compres-threads=#
+#并行压缩的工作进场数量，它直接提交给xtrabackup的子进程
+
+--compress-chunk-size=#
+#指定每个压缩进程的内部工作缓冲区的尺寸，用字节来测量。它直接提交给xtrabackup的子进程
+
+--copy-back
+#复制所有的备份到他们原来的位置
+
+--databases=LIST 
+#指定将要备份的数据库列表。支持databasename.tablename格式，如果没指定参数，则备份所有数据库
+
+--decompress
+#解压所有以选项--compress备份的，结尾是.qp的文件。使用参数--parallel允许多个文件同时被解密和或解压。
+
+--decrypt=ENCRPYTION-ALGORITHM
+#解密用--encrpyt选项加密的以.xbcrypt结尾的文件。
+
+--defaults-file=[my.cnf]
+#通过制定一个字符串来设置MySQL的默认选项
+
+--defaults-extra-file=[my.cnf]
+#在从标准的默认文件中取值默认之前的额外文件。接收一个字符串作为选项
+
+--defaults-group=GROUP-NAME
+#如果用了Mysqld_multi，可设置读取配置文件的特定组
+
+--encrypt=ENCRYPTION-ALGORITHM
+#该选项指引xtrabackup使用参数ENCRYPTION_ALGORITHM参数制定的算法，加密innoDB数据文件的备份，它直接指向子进程
+
+--encrypt-key=ENCRYPTION_KEY
+#指示xtrabackup在备份时使用ENCRYPTION_KEY指定的key做--encrypt加密。它直接传给子进程
+
+--encrypt-key-file=ENCRYPTION_KEY_FILE
+#当用选项--encrpyt加密时使用存储在ENCRYPTION_KEY_FILE里存储的加密key
+
+--encrypt-threads=#
+#指定并行加密的工作线程数。它直接传给子进程
+
+--encrypt-chunk-size=#
+#指定每个加密进程使用的内粗工作缓冲区的尺寸，以字节计算大小
+
+--export
+#它用于导出单个表用于导入另一个server
+
+--extra-lsndir=DIRECTORY
+#指定xtrabackup_checkpoints文件的保留目录
+
+--force-non-empty-directories
+#该参数使得选项--copy-back or --move-back选项传输文件到非空目录。不存在的文件将被覆盖。如果选项--copy-back or --move-back必须从备份目录到一个已经存在的目标目录，则将失败
+
+--galera-info
+#该选项在备份时建立包含本地节点状态xtrabackup_galera_info文件。用于执行Percona-XtraDB-Cluster备份
+
+--host=HOST
+#执行通过TCP/IP连接访问数据库的主机，它传给mysql的子进程
+
+--ibbackup=IBBACKUP-BINARY
+#接收字符串参数，它用来指定要使用的xtrabackup binary、
+
+--include=REGEXP
+#指定一个正则表达式，用语匹配格式为databasename.tablename的表名称，它传递给--tables选项
+
+--incremental
+#建立一个增量备份，传递给xtrabackup的子进程。该参数可以和参数--incremental-lsn or --incremental-basedir配合使用。
+
+--incremental-basedir=DIRECTORY
+#指定一个包换全库备份的目录作为增量备份的基础数据库
+
+--incremental-dir=DIRECTORY
+#指定增量备份与全库备份合并去建立一个新的全备份的目录。
+
+--incremental-lsn=LSN
+#指定增量备份将要开始的LSN，它替代选项--incremental-basedir
+
+--kill-long-queries-timeout=SECONDS
+#该选项指定innobackupex在开始FLUSH TABLES WITH READ LOCK和杀掉这些阻碍他的查询之间的时间的等待时间，以秒计算，默认为0，意味着innobackupex不尝试杀任何查询，该选项需要process and super权限
+
+--kill-long-query-type=all|select
+#指定解锁全局锁时将被杀掉的查询类型，默认是all
+
+--lock-wait-timeout=SECONDS
+#运行FLUSH TABLES WITH READ LOCK之前，innobackupex等待阻塞查询的时间数(秒数)
+
+--lock-wait-threashold=SECONDS
+#选项指定查询运行时间阀值，当innobackupex发现长运行查询伴随着--lock-wait-timeout的一个非0值，
+
+--lock-wait-query-type=all|update
+#指定innobackupex发出一个全局锁之前什么类型的查询允许完成
+
+--lock-copy-interval=#
+#指定日志日志复制线程检车完成的时间间隔，以毫秒计算
+
+--move-back
+#移动之前的所有备份从一个备份目录到他们的原始位置
+
+--no-lock
+#不允许使用flush tables with read lock表锁。如果你的所有表示INNODB并且你不关心二进制日志备份的位置。如果有任何DDL语句被执行或任何非INNODB表上的update操作，这个选项就不能使用
+
+--notimestamp
+#把备份放在一个通过选项backup-root-dir指定的子目录里
+
+--no-version-check
+#禁止版本检查
+
+--parallel=NUMBER-OF-THREADS
+#该选项接收一个整数，xtarbackup子进程将用于同时备份文件的并发数。如果有多个.ibd文件可以并行，如果只有一个表空间文件，则该选项无效
+
+--password=PASSWORD
+#指定连接到数据库的账户密码
+
+--port=PORT
+#该选项指定通过TCP/IP连接到数据库时所用的端口
+
+--rebuild-indexes
+#只有用--apply-log选项时它才有效，当应用日志后使得xtrabackup重建所有的二级索引。一般用于准备简约备份
+
+--rebuild-threas=NUMBER-OF-THREADS
+#当一起使用选项--apply-log and --rebuild-indexes选项时才有用，使用后，当重建索引时，xtrabackup处理表空间时用一定数量的线程的并行模式
+
+--redo-only
+#选项用于准备全库备份和合并处最有一个备份外的所有增量备份。它强制xtrabackup忽略“rollback”阶段只做“redo”.
+
+--rsync
+#使用rsync工具优化本地文件传输。它让xtrabackup使用rsync复制所有非innoDB文件，而不是使用多个cp 
+
+--safe-slave-backup
+#停止从SQL进程并等待启动备份直到slave_open_temp_tables的值为0。如果没有打开临时表，备份会进行，否则SQL进程将启动并直到没有打开的临时表时停止。如果slave_open_temp_tables在--safe-slave-backup-timeout秒后没有变成0，则备份会失败。备份结束后，从SQL进程将重新启动
+
+--safe-slave-backup-timeout=SECONDS
+#--safe-slave-backup要等slave_open_temp_tables变成0的时间，默认为300秒
+
+--scopt=SCP-OPTIONS
+#当参数--remost-host指定时传递给scp的参数
+
+--slave-info
+#当备份一个复制从库操作的时候用，它打印二进制日志的position和主库的名字，它页把这些信息写入xtrabackup_slave_info文件作为一个CHANGE MASTER命令
+
+--socket=SOCKET
+#指定连接到本地数据库sever时使用的一个unix domain socket，它没有修改的传入mysql子进程
+
+--sshopt=SSH-OPTIONS
+#当使用参数--remost-host时，使用ssh的命令行参数
+
+--stream=STREMNAME
+#当使用流备份时使用的特定格式。备份将以特定格式传到STDOUT。支持的格式为tar and xbstream
+
+--tables-file=FILE
+#指定备份的表的列表，格式为database.tablename
+
+--throttle=IOS
+#指定I/O操作的数量/秒。该参数只适用于备份阶段。不适用于参数--apply-log,--copy-back
+
+--tmpdir=DIRECTORY
+#在参数--stream使用时指定，是指临时文件被存储的位置
+
+--use-memory=#
+#该参数只能和参数--apply-log配合使用，被用于xtrabackup做creash恢复时准备锁使用的内存量(单位：字节)。也支持其他单位，如：1MB,1M,1GB,1G
+
+--user=USER
+#指定连接到mysql时使用的用户名
+
+--version
+#显示innobackupex的版本信息和版权等信息
+
+--version-check
+#指定该选项后，innobackupex将在建立一个连接后，在备份阶段执行一个版本检查
+------------------------------------------------------------------------------------------
+
+
+例如：
+innobackupex --user root --password avy0,.s0Ytfh /backup/all_backup --no-timestamp
+#完全备份
+
+innobackupex --user root --password avy0,.s0Ytfh --apply-log  --redo-only /backup/all_backup
+systemctl stop mysqld
+rm -rf /var/lib/mysql
+innobackupex --user root --password avy0,.s0Ytfh --copy-back /backup/all_backup/
+chown -R mysql:mysql mysql
+systemctl restart mysqld
+#恢复完全备份的数据
+
