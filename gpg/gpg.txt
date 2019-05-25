@@ -17,10 +17,35 @@ gpg -c [filename]  #对文件进行加密（加密后会生成以.gpg结尾的�
 gpg -d [filename].gpg > [filename] #对文件进行解密
 
 GPG非对称加密
-gpg --gen-key #创建密钥对
+gpg --gen-key #创建密钥对(用户的公钥在/root/.gnupg/pubring.gpg,私钥信息分别保存在/root/.gnupg/secring.gpg文件内)
+
 gpg --list-keys #查看公钥环
+/root/.gnupg/pubring.gpg
+------------------------
+pub   2048R/2D43B5ED 2019-05-25
+uid                  dongfang (dongfang) <dongfangmaster@gmail.com>
+sub   2048R/D4E826B5 2019-05-25
+
+
+gpg --list-secret-keys #查看私钥环
+/root/.gnupg/secring.gpg
+------------------------
+sec   2048R/2D43B5ED 2019-05-25
+uid                  dongfang (dongfang) <dongfangmaster@gmail.com>
+ssb   2048R/D4E826B5 2019-05-25
+
+
 gpg -a --export dongfang > dongfang.pub #--export的作用是导出密钥，-a的作用是导出的密钥存储为ASCII格式,dongfang 是查看公钥环里面的uid名称，后面的.pub文件名称可自定义
 gpg --import /tmp/UserA.pub #导入发送方的公钥信息，以便在加密文件时指定对应的公钥,/tmp/UserA.pub这个是保存公钥的位置
 gpg -e -r dongfang [filename] #使用公钥对filenam文件加密，-e选项是使用密钥加密数据，-r选项后面跟的是密钥，说明使用哪个密钥对文件加密
 gpg -d [filename].gpg > [filename] #对文件进行解密
+
+gpg --armor --output public-key-gmail.txt --export 2D43B5ED #导出公钥保存为public-key-gmail.txt
+gpg --armor --output secret-key-gmail.txt --export-secret-keys  2D43B5ED #导出私钥保存到secret-key-gmail.txt
+
+gpg --delete-key 2D43B5ED #删除公钥（2D43B5ED这个是秘钥的ID）
+gpg --delete-secret-key 2D43B5ED #删除私钥
+
+你的公钥的作用：别人用来给你发加密的信息＆别人验证你的签名，即加密&验证（别人来做） 
+你的私钥的作用：你用来创建签名＆解密别人发给你的信息的，即解密&签名（你来做）
 
