@@ -1,0 +1,26 @@
+加密算法主要有以下几种分类：
+1.为确保数据机密性算法：
+a) 对称加密算法(AES,DES)
+b) 非对称加密算法（RSA，DSA）
+
+2.为确保数据完整性算法：
+a) 信息摘要（MD5，SHA256，SHA512）
+
+
+MD5校验文件
+md5sum [filename]
+备注：只要文件里面内容发生改变，则MD5值就会变
+
+GPG对称加密
+yum -y install gnupg2  #安装软件
+gpg -c [filename]  #对文件进行加密（加密后会生成以.gpg结尾的加密文件）
+gpg -d [filename].gpg > [filename] #对文件进行解密
+
+GPG非对称加密
+gpg --gen-key #创建密钥对
+gpg --list-keys #查看公钥环
+gpg -a --export dongfang > dongfang.pub #--export的作用是导出密钥，-a的作用是导出的密钥存储为ASCII格式,dongfang 是查看公钥环里面的uid名称，后面的.pub文件名称可自定义
+gpg --import /tmp/UserA.pub #导入发送方的公钥信息，以便在加密文件时指定对应的公钥,/tmp/UserA.pub这个是保存公钥的位置
+gpg -e -r dongfang [filename] #使用公钥对filenam文件加密，-e选项是使用密钥加密数据，-r选项后面跟的是密钥，说明使用哪个密钥对文件加密
+gpg -d [filename].gpg > [filename] #对文件进行解密
+
