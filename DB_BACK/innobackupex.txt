@@ -10,7 +10,7 @@ yum install percona-xtrabackup-24-2.4.4-1.el7.x86_64.rpm
 innobackupex 参数
 ------------------------------------------------------------------------------------------
 --apply-log 
-#通过应用同一目录下的事务日志文件xtrabackup_logfile，在BACKUP-DIR目录准备一个备份。页建立一个新的事务日志文件。innoDB的配置是从innobackupex备份时建立的文件backup-my.cnf读取。
+#恢复日志，通过应用同一目录下的事务日志文件xtrabackup_logfile，在BACKUP-DIR目录准备一个备份。页建立一个新的事务日志文件。innoDB的配置是从innobackupex备份时建立的文件backup-my.cnf读取。
 
 --close-files
 #不保持文件被打开。默认备份时tablespace不关闭，但如果表空间很大并且不适合任何限制，有一个可选的方法是关闭不再访问的文件。使用该选项会产生不一致的备份。
@@ -28,7 +28,7 @@ innobackupex 参数
 #指定每个压缩进程的内部工作缓冲区的尺寸，用字节来测量。它直接提交给xtrabackup的子进程
 
 --copy-back
-#复制所有的备份到他们原来的位置
+#恢复数据，复制所有的备份到他们原来的位置
 
 --databases=LIST 
 #指定将要备份的数据库列表。支持databasename.tablename格式，如果没指定参数，则备份所有数据库
@@ -88,10 +88,10 @@ innobackupex 参数
 #建立一个增量备份，传递给xtrabackup的子进程。该参数可以和参数--incremental-lsn or --incremental-basedir配合使用。
 
 --incremental-basedir=DIRECTORY
-#指定一个包换全库备份的目录作为增量备份的基础数据库
+#表示上一次备份的目录，指定一个全库备份的目录作为增量备份的基础数据库
 
 --incremental-dir=DIRECTORY
-#指定增量备份与全库备份合并去建立一个新的全备份的目录。
+#增量恢复时指定增量备份的目录，指定增量备份与全库备份合并去建立一个新的全备份的目录。
 
 --incremental-lsn=LSN
 #指定增量备份将要开始的LSN，它替代选项--incremental-basedir
@@ -142,7 +142,7 @@ innobackupex 参数
 #当一起使用选项--apply-log and --rebuild-indexes选项时才有用，使用后，当重建索引时，xtrabackup处理表空间时用一定数量的线程的并行模式
 
 --redo-only
-#选项用于准备全库备份和合并处最有一个备份外的所有增量备份。它强制xtrabackup忽略“rollback”阶段只做“redo”.
+#合并日志(相当于追加写)，选项用于准备全库备份和合并处最有一个备份外的所有增量备份。它强制xtrabackup忽略“rollback”阶段只做“redo”.
 
 --rsync
 #使用rsync工具优化本地文件传输。它让xtrabackup使用rsync复制所有非innoDB文件，而不是使用多个cp 
@@ -210,12 +210,13 @@ innobackupex --user root --password avy0,.s0Ytfh /backup/all_backup --no-timesta
 innobackupex --user root --password avy0,.s0Ytfh --incremental /backup/incremental --incremental-basedir=/backup/all_backup
 innobackupex --user root --password avy0,.s0Ytfh --incremental /backup/incremental --incremental-basedir=/backup/incremental/2019-05-24_18-58-33/
 
-完全+增量恢复：
+完全+增量恢复：(增量恢复是把增量数据合并到完全拷贝数据里面)
 innobackupex  --user root --password avy0,.s0Ytfh --apply-log --redo-only /backup/all_backup/
 innobackupex  --user root --password avy0,.s0Ytfh --apply-log --redo-only /backup/all_backup/ --incremental-dir=/backup/incremental/2019-05-24_18-58-33
 innobackupex  --user root --password avy0,.s0Ytfh --apply-log --redo-only /backup/all_backup/ --incremental-dir=/backup/incremental/2019-05-24_19-32-00
 systemctl stop mysqld.service 
 rm -rf /var/lib/mysql
+恢复使用的copy-back后面路径是完全备份的路径
 innobackupex  --user root --password avy0,.s0Ytfh --copy-back /backup/all_backup/
 chown -R mysql:mysql /var/lib/mysql
 systemctl start mysqld
