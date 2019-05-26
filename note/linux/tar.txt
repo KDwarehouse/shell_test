@@ -1,0 +1,30 @@
+tar 命令可以为linux的文件和目录创建档案。
+打包：是指将一大堆文件或目录变成一个总的文件。
+压缩：是将一个大的文件通过一些压缩算法变成一个小文件。
+
+-c：建立新的备份文件
+-v：显示指令执行过程
+-f：指定备份文件
+-x：从备份文件中还原文件,解压
+-z：通过gz指令压缩备份文件
+-j：支持bz2解压文件
+-C：这个选项用在解压缩，若要在特定目录解压缩，可以使用这个选项
+
+举例：
+一、
+tar -cvf test.tar /usr/test #创建归档文件tar包
+tar -xvf test.tar #解包
+tar -xvf test.tar -C /temp  #解压到temp目录下
+
+二、
+tar -zcvf test.tar.gz /usr/test #创建gz的压缩包
+tar -zxvf test.tar.gz #解压
+
+三、
+tar -jcvf test.tar.bz2 /usr/test #创建bz2的压缩包
+tar -jxvf test.tar.bz2 #解压
+
+
+linux下提供了zip和unzip程序，zip是压缩程序，unzip是解压程序
+zip all.zip file #创建压缩包
+unzip all.zip #解压
