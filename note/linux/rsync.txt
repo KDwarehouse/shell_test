@@ -1,0 +1,2 @@
+rsync(remote sync)是linux平台下的数据镜像备份软件，它不像FTP那样需要全备份，rsync可以根据数据的变化进行差异备份，从而减少数据流量，提高工作效率
+rsync主要分为三个配置文件，分别是rsyncd.conf(主配置文件），rsyncd.secrets(密码文件），rsyncd.motd(服务器信息文件）
