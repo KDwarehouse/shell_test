@@ -1,4 +1,8 @@
 #!/bin/bash
+rpm -qa jq
+if [ $? -ne 0 ];then
+        yum -y install jq
+fi
 DnsNum=`sed -n '$=' /root/Lets_Encrypt/Conf/DnsPod_User_List.txt`
 for i in `seq ${DnsNum}`
 do
