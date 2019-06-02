@@ -1,4 +1,5 @@
 #!/bin/bash
+curl  https://get.acme.sh | sh
 rpm -qa jq
 if [ $? -ne 0 ];then
         yum -y install jq
