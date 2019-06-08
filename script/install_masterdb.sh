@@ -36,6 +36,7 @@ if [ -d /var/lib/mysql ];then
 fi
 mv mysql-community-server-minimal-5.7.24-1.el7.x86_64.rpm /tmp
 yum -y install mysql-*.rpm
+\cp -rf /tmp/work/shell_test/conf/master.cnf /etc/my.cnf
 systemctl start mysqld
 ss -nutlp | grep mysqld
 if [ $? -eq 0 ];then
@@ -54,8 +55,9 @@ expect "mysql>" {send "exit\r"}
 EOF
 [ $? -eq 0 ] && echo mysql密码修改成功,密码是:${passwdb} || echo 密码修改失败！
 
-\cp -rf /tmp/work/shell_test/conf/master.cnf /etc/my.cnf
-
+read -p "是否要配置主从（y/n）" userchioce
+case $userchioce in 
+Y/y)
 read -p "设置主库ID编号：" id_a
 read -p "设置主库binlog日志代号：" a_name
 read -p "设置mysql端口号：" port_a
@@ -80,3 +82,7 @@ echo -e "\033[42;37m posi位置为:$m_posi \033[0m"
 chmod 777 /etc/rc.local
 echo "systemctl start mysqld" >> /etc/rc.local
 rm -rf /tmp/soft || rm -rf /tmp/softsoft11
+continue;;
+N/n)
+exit;;
+esac
