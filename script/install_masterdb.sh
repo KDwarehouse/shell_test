@@ -1,4 +1,23 @@
 #!/bin/bash
+if [ -d /var/lib/mysql ];then
+        echo -e "\033[41;37m MYSQL已经安装 \033[0m"
+        read -p "1）卸载并重新安装 2）退出" user_chi
+        case ${user_chi} in
+        1)
+                rm -rf /var/lib/mysql
+                yum remove mysql*
+                pkill -9 mysqld
+                a=`find / -name mysql`
+                for i in $a
+                do
+                        rm -rf $i
+                done
+                rm -rf /var/log/mysqld.log
+                ;;
+        2)
+                exit;;
+        esac
+fi
 if [ -d /tmp/soft ];then
 	mkdir /tmp/softsoft11
 	cd /tmp/softsoft11
@@ -6,6 +25,10 @@ if [ -d /tmp/soft ];then
 	yum -y remove mariadb*
 	wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.24-1.el7.x86_64.rpm-bundle.tar
 	tar xf mysql-5.7.24-1.el7.x86_64.rpm-bundle.tar
+	mv mysql-community-server-minimal-5.7.24-1.el7.x86_64.rpm /tmp
+	rm -rf mysql-5.7.24-1.el7.x86_64.rpm-bundle.tar
+	yum -y install mysql-community-*.rpm
+	systemctl start mysqld
 else
 	mkdir /tmp/soft
 	cd /tmp/soft
@@ -13,39 +36,22 @@ else
 	yum -y remove mariadb*
 	wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.24-1.el7.x86_64.rpm-bundle.tar
 	tar xf mysql-5.7.24-1.el7.x86_64.rpm-bundle.tar
+	mv mysql-community-server-minimal-5.7.24-1.el7.x86_64.rpm /tmp
+        rm -rf mysql-5.7.24-1.el7.x86_64.rpm-bundle.tar
+        yum -y install mysql-community-*.rpm
+	systemctl start mysqld
 fi
-
-if [ -d /var/lib/mysql ];then
-	echo -e "\033[41;37m MYSQL已经安装 \033[0m"
-	read -p "1）卸载并重新安装 2）退出" user_chi
-	case ${user_chi} in
-	1)
-		rm -rf /var/lib/mysql
-		yum remove mysql*
-		pkill -9 mysqld
-		a=`find / -name mysql`
-		for i in $a
-		do
-			rm -rf $i
-		done
-		rm -rf /var/log/mysqld.log
-		;;
-	2)
-		exit;;
-	esac
-fi
-mv mysql-community-server-minimal-5.7.24-1.el7.x86_64.rpm /tmp
-yum -y install mysql-*.rpm
-\cp -rf /tmp/work/shell_test/conf/master.cnf /etc/my.cnf
-systemctl start mysqld
 ss -nutlp | grep mysqld
 if [ $? -eq 0 ];then
 	echo "mysql安装已经完成！"
 else
 	echo "mysql安装失败！"
 fi
-
+\cp -rf /tmp/work/shell_test/conf/master.cnf /etc/my.cnf
+systemctl restart mysqld
 read -p "请输入你要创建的密码：" passwdb
+read -p "设置mysql端口号：" port_b
+sed -i "s/port=4273/port=${port_b}/" /etc/my.cnf
 passwda=`awk '/password/{print $NF}' /var/log/mysqld.log`
 expect <<  EOF
 spawn mysql -uroot  -p
@@ -58,31 +64,27 @@ EOF
 read -p "是否要配置主从（y/n）" userchioce
 case $userchioce in 
 Y/y)
-read -p "设置主库ID编号：" id_a
-read -p "设置主库binlog日志代号：" a_name
-read -p "设置mysql端口号：" port_a
-sed -i "s/server_id=1/server_id=${id_a}/" /etc/my.cnf
-sed -i "s/log_bin=master/log_bin=${a_name}/" /etc/my.cnf
-sed -i "s/port=4273/port=${port_a}/" /etc/my.cnf
-systemctl restart mysqld
-
-read -p "请输入你要允许那个ip同步本机的数据" ip_onlya
+	read -p "设置主库ID编号：" id_a
+	read -p "设置主库binlog日志代号：" a_name
+	read -p "设置mysql端口号：" port_a
+	sed -i "s/server_id=1/server_id=${id_a}/" /etc/my.cnf
+	sed -i "s/log_bin=master/log_bin=${a_name}/" /etc/my.cnf
+	sed -i "s/port=4273/port=${port_a}/" /etc/my.cnf
+	read -p "请输入你要允许那个ip同步本机的数据" ip_onlya
 expect << EOF
-spawn mysql -uroot -p
-expect "password:"	{send "${passwdb}\r"}
-expect "mysql>"		{send "GRANT REPLICATION SLAVE ON *.* TO 'slave'@'${ip_onlya}' IDENTIFIED BY 'slave1212';\r"}
-expect "mysql>"		{send "GRANT REPLICATION SLAVE ON *.* TO 'slave'@'${ip_onlyb}' IDENTIFIED BY 'slave1212';\r"}
-expect "mysql>"		{send "exit\r"}
+	spawn mysql -uroot -p
+	expect "password:"	{send "${passwdb}\r"}
+	expect "mysql>"		{send "GRANT REPLICATION SLAVE ON *.* TO 'slave'@'${ip_onlya}' IDENTIFIED BY 'slave1212';\r"}
+	expect "mysql>"		{send "exit\r"}
 EOF
-
-m_binfile=`mysql -uroot -p${passwdb} -e "show master status\G"  2>/dev/null | awk '/File/{print $2}'`
-m_posi=`mysql -uroot -p${passwdb} -e "show master status\G"  2>/dev/null | awk '/Position/{print $2}'`
-echo -e "\033[42;37m bin文件名为:$m_binfile \033[0m"
-echo -e "\033[42;37m posi位置为:$m_posi \033[0m"
-chmod 777 /etc/rc.local
-echo "systemctl start mysqld" >> /etc/rc.local
-rm -rf /tmp/soft || rm -rf /tmp/softsoft11
-continue;;
+	m_binfile=`mysql -uroot -p${passwdb} -e "show master status\G"  2>/dev/null | awk '/File/{print $2}'`
+	m_posi=`mysql -uroot -p${passwdb} -e "show master status\G"  2>/dev/null | awk '/Position/{print $2}'`
+	echo -e "\033[42;37m bin文件名为:$m_binfile \033[0m"
+	echo -e "\033[42;37m pos位置为:$m_posi \033[0m"
+	chmod 777 /etc/rc.local
+	echo "systemctl start mysqld" >> /etc/rc.local
+	rm -rf /tmp/soft || rm -rf /tmp/softsoft11
+	;;
 N/n)
-exit;;
+	exit;;
 esac
