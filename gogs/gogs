@@ -1,0 +1,13 @@
+Gogs是一款易用的自助Git服务，相比于GitLab搭建更简单，性能要求更低。
+Gogs官网[gogs.io](https://gogs.io/)
+
+
+一、安装部署gogs仓库
+1、安装包下载
+wget https://cdn.gogs.io/0.11.79/gogs_0.11.79_linux_amd64.tar.gz
+
+
+
+
+二、备份gogs仓库
+三、恢复gogs仓库
