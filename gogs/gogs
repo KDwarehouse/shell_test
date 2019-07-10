@@ -3,11 +3,99 @@ Gogs官网[gogs.io](https://gogs.io/)
 
 
 一、安装部署gogs仓库
-1、安装包下载
-wget https://cdn.gogs.io/0.11.79/gogs_0.11.79_linux_amd64.tar.gz
 
+1、安装包下载（如果此链接不能下载，就在此仓库中找包）
+	yum -y install git (这是前提)
+	wget https://cdn.gogs.io/0.11.79/gogs_0.11.79_linux_amd64.tar.gz
+	tar xf gogs_0.11.79_linux_amd64.tar.gz
+	mv gogs /usr/loacl/
 
+	修改gogs配置文件
+	vim /usr/local/gogs/scripts/init/debian/gogs
+	PATH=/sbin:/usr/sbin:/bin:/usr/bin
+	DESC="Gogs Service" #自定义修改 随意
+	NAME=gogs
+	SERVICEVERBOSE=yes
+	PIDFILE=/var/run/$NAME.pid
+	SCRIPTNAME=/etc/init.d/$NAME
+	WORKINGDIR=/usr/local/gogs #这个根据自己的目录修改
+	DAEMON=$WORKINGDIR/$NAME
+	DAEMON_ARGS="web"
+	USER=root #如果运行gogs不是用的这个用户，修改对应用户
+	
+	复制gogs配置文件到/etc/init.d/
+	cp /usr/local/gogs/scripts/init/debian/gogs /etc/init.d/
+	chmod +x /etc/init.d/gogs
 
+	复制service
+	cp /usr/local/gogs/scripts/systemd/gogs.service /etc/systemd/system/
+	
+2、安装nginx并修改配置文件
+	a、安装nginx
+	yum -y install gcc pcre-devel openssl-devel
+	useradd -s /sbin/nologin nginx
+	wget http://nginx.org/download/nginx-1.16.0.tar.gz
+	tar xf nginx-1.16.0.tar.gz
+	cd nginx-1.16.0/
+	./configure --prefix=/usr/local/nginx --user=nginx --group=nginx --with-http_ssl_module
+	make && make install
+
+	b、修改配置文件
+	mkdir /usr/local/nginx/conf/vhost
+	vim /usr/local/nginx/conf/vhost/gogs.conf
+	server {
+	    listen 80;
+	    server_name gogs.localhost.com;
+	    error_log logs/gogs_error.log;
+	    access_log logs/gogs_access.log;
+	    location / {
+	    	proxy_pass http://127.0.0.1:3000/;
+	    }
+	}
+	
+	vim /usr/local/nginx/conf/nginx.conf #在主配置文件里面写入下面这一行
+	include /usr/local/nginx/conf/vhost/*.conf;
+	
+	/usr/local/nginx/sbin/nginx #启动nginx程序
+
+3、安装MySQL 5.7.24
+	yum -y install autoconf perl-JSON perl
+	yum -y remove mariadb*
+	wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.24-1.el7.x86_64.rpm-bundle.tar
+	tar xf mysql-5.7.24-1.el7.x86_64.rpm-bundle.tar
+	mv mysql-community-server-minimal-5.7.24-1.el7.x86_64.rpm /tmp
+	yum -y install mysql-community-*.rpm
+	systemctl start mysqld
+	grep password /var/log/mysqld.log
+
+	修改mysql初始密码 
+	mysql -uroot -p
+	
+	>set password=password('new password');
+	>quit;
+	systemctl restart mysqld
+
+	创建gogs数据库
+	mysql -uroot -p
+	
+	>CREATE DATABASE gogs CHARACTER SET utf8 COLLATE utf8_bin;
+	>GRANT ALL PRIVILEGES ON gogs.* TO ‘root’@‘localhost’ IDENTIFIED BY '123456'; 
+	>FLUSH PRIVILEGES;
+	>QUIT;
+
+4、启动gogs
+	cd /usr/local/gogs
+	./gogs web  # 非守护进程启动 关闭终端，服务停止
+	nohup ./gogs web &   #以守护进程方式启动	
+
+5、重启gogs
+	ps -ef|grep gogs
+	kill -9 gogs
+	nohup ./gogs web &
+
+6、gogs初始化配置
+	使用域名进入进行初始化配置
 
 二、备份gogs仓库
+
 三、恢复gogs仓库
