@@ -98,4 +98,89 @@ Gogs官网[gogs.io](https://gogs.io/)
 
 二、备份gogs仓库
 
+1、gogs仓库备份只需备份数据库gogs库，gogs配置文件app.ini，家目录下面的gogs-repositories文件夹
+
+2、下面是gogs备份脚本
+
+#!/bin/bash
+telegram="/usr/local/etc/zabbix_agentd.conf.d/zabbix_diy/script/telegram/send_api_telegram.sh"
+
+#mysql用户&密码
+User=root
+Passwd=037c28cdc241dda8
+
+Now_Time=`date +%Y-%m-%d-%H-%M`
+FtpAccount=wxkj
+FtpPass=Aabb321183!
+A_zone=13.251.110.75
+
+if [ ! -d /tmp/gogs_backup/gogs ];then
+	mkdir -p /tmp/gogs_backup/gogs 
+	cd /tmp/gogs_backup/gogs
+	#gogs-db-backup
+	mysqldump -u${User} -p${Passwd} --databases gogs > gogs.sql
+	#gogs-repositories-dir-backup
+	cp -r /root/gogs-repositories /tmp/gogs_backup/gogs
+	#configure-file-backup
+	cp /usr/local/gogs/custom/conf/app.ini /tmp/gogs_backup/gogs
+else
+	rm -rf /tmp/gogs_backup/gogs/*
+	rm -rf /tmp/gogs_backup/gogs-*
+	cd /tmp/gogs_backup/gogs
+        #gogs-db-backup
+        mysqldump -u${User} -p${Passwd} --databases gogs > gogs.sql
+        #gogs-repositories-dir-backup
+        cp -r /root/gogs-repositories /tmp/gogs_backup/gogs
+        #configure-file-backup
+        cp /usr/local/gogs/custom/conf/app.ini /tmp/gogs_backup/gogs
+fi
+
+cd /tmp/gogs_backup/
+tar zcf gogs-${Now_Time}.tar.gz /tmp/gogs_backup/gogs
+split -b 100m gogs-${Now_Time}.tar.gz  gogs-${Now_Time}.tar.gz.
+Filename='gogs-'${Now_Time}'.tar.gz'.
+
+if [ $? -ne 0 ];then
+	echo "gogs备份失败"
+	$telegram '小zhaspacegogs-backupreturnreturn问题开始时间:space'${Now_time}'return平台:space'gogs'return问题:space备份失败return详情:生成tar包失败'
+else
+	echo "gogs备份成功"
+fi
+yum -y install ftp
+ftp -v -n ${A_zone} > /tmp/gogsftp.log  <<EOF
+user $FtpAccount $FtpPass
+binary
+cd A_zone
+mkdir gogs
+cd gogs
+mkdir ${Now_Time}
+cd ${Now_Time}
+lcd /tmp/gogs_backup/
+prompt
+mput ${Filename}*
+bye
+EOF
+cat /tmp/gogsftp.log | grep   '230 OK. Current directory is /'
+if [ $? -eq 0  ];then
+	echo "${Now_Time}A区节点gogs备份-上传成功"
+else
+	echo "${Now_Time}A区节点gogs备份-上传失败"
+	$telegram '小zhaspacegogs-backupreturnreturn问题开始时间:space'${Now_time}'return平台:space'gogs'return问题:spaceA区节点备份-上传失败return详情:ftpA区节点登陆失败'
+	exit
+fi
+rm -f /tmp/gogsftp.log
+
 三、恢复gogs仓库
+1、按照上面安装gogs的方法，添加程序运行账号，配置mysql数据库，解压gogs二进制文件（不要操作启动和安装程序），以上配置尽可能和原服务器相同。
+2、将备份的仓库文件gogs-repositories解压到家目录下
+3、恢复gogs库
+4、恢复配置文件
+mkdir -p /usr/local/gogs/custom/conf
+cp gogs-app.ini /usr/local/gogs/custom/conf/app.ini
+需要将配置文件中的服务器信息修改成现在的服务器信息，其他信息不用修改。
+5、修改目录权限
+chmod 700 /usr/local/gogs/
+chown -R root /usr/local/gogs/
+6、启动访问测试
+nohup /usr/local/gogs/gogs web &
+
