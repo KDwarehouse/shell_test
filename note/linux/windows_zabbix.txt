@@ -1,0 +1,8 @@
+
+C:\zabbix\zabbix_agent\bin\zabbix_agentd.exe -i -c C:\zabbix\zabbix_agent\conf\zabbix_agentd.conf  #安装
+C:\zabbix\zabbix_agent\bin\zabbix_agentd.exe -s -c C:\zabbix\zabbix_agent\conf\zabbix_agentd.conf  #启动
+C:\zabbix\zabbix_agent\bin\zabbix_agentd.exe -d -c C:\zabbix\zabbix_agent\conf\zabbix_agentd.conf  #卸载
+C:\zabbix\zabbix_agent\bin\zabbix_agentd.exe -x -c C:\zabbix\zabbix_agent\conf\zabbix_agentd.conf  #停止
+
+
+netstat -an | find "10050"
