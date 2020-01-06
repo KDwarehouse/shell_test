@@ -23,10 +23,10 @@ if [ -d /tmp/soft ];then
 	cd /tmp/softsoft11
 	yum -y install autoconf perl-JSON perl wget expect 
 	yum -y remove mariadb*
-	wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.24-1.el7.x86_64.rpm-bundle.tar
-	tar xf mysql-5.7.24-1.el7.x86_64.rpm-bundle.tar
-	mv mysql-community-server-minimal-5.7.24-1.el7.x86_64.rpm /tmp
-	rm -rf mysql-5.7.24-1.el7.x86_64.rpm-bundle.tar
+	wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.26-1.el7.x86_64.rpm-bundle.tar
+	tar xf mysql-5.7.26-1.el7.x86_64.rpm-bundle.tar
+	mv mysql-community-server-minimal-5.7.26-1.el7.x86_64.rpm /tmp
+	rm -rf mysql-5.7.26-1.el7.x86_64.rpm-bundle.tar
 	yum -y install mysql-community-*.rpm
 	systemctl start mysqld
 else
@@ -34,10 +34,10 @@ else
 	cd /tmp/soft
 	yum -y install autoconf perl-JSON perl wget expect
 	yum -y remove mariadb*
-	wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.24-1.el7.x86_64.rpm-bundle.tar
-	tar xf mysql-5.7.24-1.el7.x86_64.rpm-bundle.tar
-	mv mysql-community-server-minimal-5.7.24-1.el7.x86_64.rpm /tmp
-        rm -rf mysql-5.7.24-1.el7.x86_64.rpm-bundle.tar
+	wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.26-1.el7.x86_64.rpm-bundle.tar
+	tar xf mysql-5.7.26-1.el7.x86_64.rpm-bundle.tar
+	mv mysql-community-server-minimal-5.7.26-1.el7.x86_64.rpm /tmp
+        rm -rf mysql-5.7.26-1.el7.x86_64.rpm-bundle.tar
         yum -y install mysql-community-*.rpm
 	systemctl start mysqld
 fi
